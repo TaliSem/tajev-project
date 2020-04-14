@@ -41,9 +41,12 @@
     "nodemailer": "^6.4.5",
     "nodemailer-smtp-transport": "^2.7.4",
     "npm-auth": "^1.1.0",
+    "react-big-calendar": "^0.24.3",
     "react-calendar": "^3.0.1",
     "react-google-calendar-api": "^1.0.11",
     "react-icons": "^3.9.0",
+    "react-widgets-moment-localizer": "^1.0.2",
+    "react_google_calendar": "^2.2.4444",
     "reactjs-google-calendar": "^1.0.1"
   },
   "devDependencies": {
