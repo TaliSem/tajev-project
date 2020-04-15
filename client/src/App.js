@@ -13,7 +13,7 @@ import NewUser from "./user/NewUser";
 import Terms from "./user/Terms";
 import HomeRedirect from './Pages/HomeRedirect';
 import Practice from './Pages/Practice';
-import CalendarAdd from './Pages/GoogleCalendarAdd';
+// import CalendarAdd from './Pages/GoogleCalendarAdd';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 // import A from "./users/1.js";
@@ -88,7 +88,7 @@ class App extends Component {
       <Route exact path="/Terms" component={Terms} />
       <Route exact path="/HomeRedirect" component={HomeRedirect} />
       <Route exact path="/Practice" component={Practice} />
-      <Route exact path="/CalendarApp" component={CalendarAdd} />
+      {/* <Route exact path="/CalendarApp" component={CalendarAdd} /> */}
       
 
       </Switch>
