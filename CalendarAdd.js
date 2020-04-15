@@ -1,11 +1,23 @@
 // const {google} = require('googleapis');
+const express = require("express");
 const { google } = require('googleapis');
+
+const app = express();
+
+app.use(express.static('static'));
+
+const server = app.listen(3000, function() {
+    const host = server.address().address;
+    const port = server.address().port;
+    console.log('Example app listening at http://%s:%s', host, port);
+});
 
 const { OAuth2 } = google.auth
 
 const OAuth2Client = new OAuth2(
 '1009819459812-t9tdmn0ft74q6mvdp57kukdhs3kgi0cc.apps.googleusercontent.com',
-'7Sl9rR4ZAPmcY2imVHnRIAn6'
+'7Sl9rR4ZAPmcY2imVHnRIAn6',
+'http://localhost:3000/Practice',
 )
 
 OAuth2Client.setCredentials({
@@ -21,8 +33,8 @@ eventStartTime.setDate(eventStartTime.getDay()+2);
 
 
 const eventEndTime = new Date();
-eventEndTime.setDate(eventEndTime.getDay()+4);
-eventEndTime.setMinutes(eventEndTime.getMinutes()+ 45);
+eventEndTime.setDate(eventEndTime.getDay()+2);
+eventEndTime.setMinutes(eventEndTime.getMinutes()+ 20);
 
 const event = {
     summary: `Meeting with David`,

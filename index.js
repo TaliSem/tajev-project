@@ -8,6 +8,10 @@ const multer = require("multer");
 const upload = multer();
 
 
+const { google } = require('googleapis');
+
+
+
 
 
 const cookieParser = require('cookie-parser');
@@ -16,12 +20,15 @@ const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
 const path = require('path');
 const nodemailer = require('nodemailer');
+const { OAuth2 } = google.auth
 
 
 
 
 // used for json inside body 
 app.use(express.json());
+
+app.use(express.static('static'));
 
 // app.get("/api", (req, res) => {
 //   console.log("root is accessed");
