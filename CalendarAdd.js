@@ -9,7 +9,8 @@ const OAuth2Client = new OAuth2(
 )
 
 OAuth2Client.setCredentials({
-    refresh_token:'1//04wD77aawU-nSCgYIARAAGAQSNwF-L9IrHou5eSn8pgFgC1JwMgGfdLcWbwCWt1Qiutyc0rERfO6t8fc4mb9LC8X4x6NcAPyjGXg',
+    
+    refresh_token: "1//0fD6gTJLo0Y7FCgYIARAAGA8SNwF-L9IrkTLJq4frzUNpIW0VCz4oPS8b7_uqdMJOy9wra5hWd99cNDpeuJSfmuWKyVtYwMK6bpU"
 });
 
 // const calendar = google.calendar({varsion: 'v3', auth: OAuth2Client});
@@ -20,7 +21,7 @@ eventStartTime.setDate(eventStartTime.getDay()+2);
 
 
 const eventEndTime = new Date();
-eventEndTime.setDate(eventEndTime.getDay()+2);
+eventEndTime.setDate(eventEndTime.getDay()+4);
 eventEndTime.setMinutes(eventEndTime.getMinutes()+ 45);
 
 const event = {
