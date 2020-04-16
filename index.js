@@ -1,17 +1,44 @@
 
 console.log("app is loading");
 const express = require("express");
-const app = express();
+
 const UsersRouterHelper = require('./UsersRouterHelper');
 const routeHelper = require("./routeHelper");
 const multer = require("multer");
 const upload = multer();
+const cookieSession = require('cookie-session');
+const passport = require('passport');
+const profileRoutes = require('./routes/profile-routes');
+const authRoutes = require('./routes/auth-routes');
+const passportSetup = require('./config/passport-setup');
+const mongoose = require('mongoose');
+const keys = require('./config/keys');
+
+
+const app = express();
 
 
 const { google } = require('googleapis');
 
+app.use(cookieSession({
+  maxAge: 24 * 60 * 60 * 1000,
+  keys: [keys.session.cookieKey]
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+mongoose.connect(keys.mongodb.dbURI, () => {
+  console.log('connected to mongodb');
+});
+
+app.use('/auth', authRoutes);
+app.use('/profile', profileRoutes);
 
 
+app.get('/', (req, res) => {
+  res.render('home', { user: req.user });
+});
 
 
 const cookieParser = require('cookie-parser');
