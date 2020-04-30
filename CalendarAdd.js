@@ -1,89 +1,158 @@
-// const {google} = require('googleapis');
-const express = require("express");
-const { google } = require('googleapis');
 
-const app = express();
+// Require google from googleapis package.
 
-app.use(express.static('static'));
+const { google } = require('googleapis')
 
-const server = app.listen(3000, function() {
-    const host = server.address().address;
-    const port = server.address().port;
-    console.log('Example app listening at http://%s:%s', host, port);
-});
+
+
+// Require oAuth2 from our google instance.
 
 const { OAuth2 } = google.auth
 
-const OAuth2Client = new OAuth2(
-'1009819459812-t9tdmn0ft74q6mvdp57kukdhs3kgi0cc.apps.googleusercontent.com',
-'7Sl9rR4ZAPmcY2imVHnRIAn6',
-'http://localhost:3000/Practice',
+
+
+// Create a new instance of oAuth and set our Client ID & Client Secret.
+
+const oAuth2Client = new OAuth2(
+
+  '1034683361683-kakthobvuqqlf3il1jpaqkc1kautp5lj.apps.googleusercontent.com',
+
+  'Db0uLsvFZu9XN5wx2lbkSV78'
+
 )
 
-OAuth2Client.setCredentials({
-    
-    refresh_token: "1//0fD6gTJLo0Y7FCgYIARAAGA8SNwF-L9IrkTLJq4frzUNpIW0VCz4oPS8b7_uqdMJOy9wra5hWd99cNDpeuJSfmuWKyVtYwMK6bpU"
-});
-
-// const calendar = google.calendar({varsion: 'v3', auth: OAuth2Client});
-const calendar = google.calendar({ version: 'v3', auth: OAuth2Client })
-
-const eventStartTime = new Date();
-eventStartTime.setDate(eventStartTime.getDay()+2);
 
 
-const eventEndTime = new Date();
-eventEndTime.setDate(eventEndTime.getDay()+2);
-eventEndTime.setMinutes(eventEndTime.getMinutes()+ 20);
+// Call the setCredentials method on our oAuth2Client instance and set our refresh token.
+
+oAuth2Client.setCredentials({
+
+  refresh_token: '1//04lt2qEbKaayxCgYIARAAGAQSNwF-L9IrHRgsyyVfp7CglZp6n0kiLifLfYleFT9-Kq4sWPhygd7aj-e5UDDSQ0PgvB7ofR3pdy4',
+
+})
+
+
+
+// Create a new calender instance.
+
+const calendar = google.calendar({ version: 'v3', auth: oAuth2Client })
+
+
+
+// Create a new event start date instance for temp uses in our calendar.
+
+const eventStartTime = new Date()
+
+eventStartTime.setDate(eventStartTime.getDay() + 4)
+
+
+
+// Create a new event end date instance for temp uses in our calendar.
+
+const eventEndTime = new Date()
+
+eventEndTime.setDate(eventEndTime.getDay() + 5)
+
+eventEndTime.setMinutes(eventEndTime.getMinutes() + 45)
+
+
+
+// Create a dummy event for temp uses in our calendar
 
 const event = {
-    summary: `Meeting with David`,
+
+  summary: `Tajev with Tajev`,
+
   location: `3595 California St, San Francisco, CA 94118`,
+
   description: `Meet with David to talk about the new client project and how to integrate the calendar for booking.`,
+
   colorId: 1,
+
   start: {
+
     dateTime: eventStartTime,
+
     timeZone: 'America/Denver',
-},
-end: {
-    dateTime: eventEndTime,
-    timeZone: 'America/Denver',
+
   },
 
-};
+  end: {
+
+    dateTime: eventEndTime,
+
+    timeZone: 'America/Denver',
+
+  },
+
+}
+
+
 
 // Check if we a busy and have an event on our calendar for the same time.
+
 calendar.freebusy.query(
-    {
-      resource: {
-        timeMin: eventStartTime,
-        timeMax: eventEndTime,
-        timeZone: 'America/Denver',
-        items: [{ id: 'primary' }],
-      },
+
+  {
+
+    resource: {
+
+      timeMin: eventStartTime,
+
+      timeMax: eventEndTime,
+
+      timeZone: 'America/Denver',
+
+      items: [{ id: 'primary' }],
+
     },
 
-    (err, res) => {
-        // Check for errors in our query and log them if they exist.
-        if (err) return console.error('Free Busy Query Error: ', err)
-    
-        
-        const eventArr = res.data.calendars.primary.busy
- 
- if (eventArr.length === 0)
- 
- return calendar.events.insert(
-   { calendarId: 'primary', resource: event },
-   err => {
-     // Check for errors and log them if they exist.
-     if (err) return console.error('Error Creating Calender Event:', err)
-     // Else log that the event was created.
-     return console.log('Calendar event successfully created.')
-   }
- )
+  },
 
-// If event array is not empty log that we are busy.
-return console.log(`Sorry I'm busy...`)
-}
+  (err, res) => {
+
+    // Check for errors in our query and log them if they exist.
+
+    if (err) return console.error('Free Busy Query Error: ', err)
+
+
+
+    // Create an array of all events on our calendar during that time.
+
+    const eventArr = res.data.calendars.primary.busy
+
+
+
+    // Check if event array is empty which means we are not busy
+
+    if (eventArr.length === 0)
+
+      // If we are not busy create a new calendar event.
+
+      return calendar.events.insert(
+
+        { calendarId: 'primary', resource: event },
+
+        err => {
+
+          // Check for errors and log them if they exist.
+
+          if (err) return console.error('Error Creating Calender Event:', err)
+
+          // Else log that the event was created.
+
+          return console.log('Calendar event successfully created.')
+
+        }
+
+      )
+
+
+
+    // If event array is not empty log that we are busy.
+
+    return console.log(`Sorry I'm busy...`)
+
+  }
+
 )
-

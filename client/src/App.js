@@ -13,8 +13,13 @@ import NewUser from "./user/NewUser";
 import Terms from "./user/Terms";
 import HomeRedirect from './Pages/HomeRedirect';
 import Practice from './Pages/Practice';
-// import CalendarAdd from './Pages/GoogleCalendarAdd';
+import CalendarApp from './Pages/Calendar';
 import "bootstrap/dist/css/bootstrap.min.css";
+import ReactAddToCalendar from './Calendar/ReactAddToCalendar';
+import AddEventCalendar from './Calendar/AddToCalendar';
+
+
+//import DatePicker from './components/DatePicker';
 
 // import A from "./users/1.js";
 // import Logout from "./users/logout.js";
@@ -88,8 +93,10 @@ class App extends Component {
       <Route exact path="/Terms" component={Terms} />
       <Route exact path="/HomeRedirect" component={HomeRedirect} />
       <Route exact path="/Practice" component={Practice} />
-      {/* <Route exact path="/CalendarApp" component={CalendarAdd} /> */}
-      
+       <Route exact path="/Calendar" component={CalendarApp} /> 
+       <Route exact path="/CalendarT" component={ReactAddToCalendar} /> 
+       <Route exact path="/AddToCalendar" component={AddEventCalendar} /> 
+   
 
       </Switch>
       

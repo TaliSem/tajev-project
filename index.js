@@ -1,118 +1,62 @@
-
 console.log("app is loading");
 const express = require("express");
-
 const UsersRouterHelper = require('./UsersRouterHelper');
 const routeHelper = require("./routeHelper");
+const routeHelperC = require("./calender/routeHelper")
 const multer = require("multer");
 const upload = multer();
-const cookieSession = require('cookie-session');
 const passport = require('passport');
-const profileRoutes = require('./routes/profile-routes');
-const authRoutes = require('./routes/auth-routes');
-const passportSetup = require('./config/passport-setup');
-const mongoose = require('mongoose');
-const keys = require('./config/keys');
-
-
+const bobyParser = require('body-parser');
+const morgan = require("morgan");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const app = express();
-
-
 const { google } = require('googleapis');
-
-app.use(cookieSession({
-  maxAge: 24 * 60 * 60 * 1000,
-  keys: [keys.session.cookieKey]
-}));
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-mongoose.connect(keys.mongodb.dbURI, () => {
-  console.log('connected to mongodb');
-});
-
-app.use('/auth', authRoutes);
-app.use('/profile', profileRoutes);
-
-
-app.get('/', (req, res) => {
-  res.render('home', { user: req.user });
-});
-
-
-const cookieParser = require('cookie-parser');
-
-const bodyParser = require('body-parser');
-const exphbs = require('express-handlebars');
-const path = require('path');
-const nodemailer = require('nodemailer');
-const { OAuth2 } = google.auth
-
-
-
-
 // used for json inside body 
 app.use(express.json());
-
 app.use(express.static('static'));
 
-// app.get("/api", (req, res) => {
-//   console.log("root is accessed");
-//   res.send({res:"result from server"});
-// });
+
+mongoose.Promise = global.Promise;
+if (process.env.NODE_ENV === "test") {
+  mongoose.connect("mongodb://localhost/APIAuthenticationTEST", {
+    useNewUrlParser: true
+  });
+} else {
+  mongoose.connect("mongodb://localhost/APIAuthentication", {
+    useNewUrlParser: true
+  });
+}
+
+
 
 ///-----------users----------//
 
- app.use(express.json());
-
-
-// app.post("/users/register", (req, res) => {
-//   UsersRouterHelper.register(req,res);
- 
-// });
-
-// app.post("/users/login", (req, res) => {
-//   UsersRouterHelper.login(req,res);
- 
-// });
-
-//-----------------------------------------------------------------------------------------//
-
-
-
-// app.engine('handlebars', exphbs());
-// app.set('view engine', 'handlebars');
-
-// app.use('/public', express.static(path.join(__dirname, 'public')));
-
-
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(bodyParser.json());
-
-// app.get('/', (req, res) => {
-//   res.render('contact');
-// });
-
-
-app.use(bodyParser.urlencoded({ extended: true}));
-app.use(bodyParser.json());
-app.use(cookieParser());
-
-
-
-app.post("/api/sendMail", (req, res) => {
-
-  console.log(req.body)
-  sendEmail(req.body.email, req.body.name, "hello")
-
-})
 
 
 
 
 
 
+
+
+
+//------------------google api
+
+
+app.use(morgan("dev"));
+app.use(bobyParser.json());
+
+//Routes
+
+// app.use("/users" ,require('./routers/users'));
+
+
+
+
+
+//---------------------------------------------------------------------------------------
 
 app.post("/users/forgotPassword", (req, res) => {
   routeHelper.forgotPassword(req, res);
@@ -154,34 +98,17 @@ app.put("/users/resetPassword", (req, res) => {
   routeHelper.resetPassword(req, res);
 });
 
-// app.post("/graduate/insert", req,jwtVerifier({secret:authen.secret}), res=> {
-//   console.log('graduateInsert');
-//   routeHelper.graduateInsert( req, res);
-// });
-// app.post("/graduate/insert", upload.any(),(req, res) => {
-//   routeHelper.graduateInsert(req, res);
-// });
 
-// app.get("/graduate/get", (req, res) => {
-//   routeHelper.graduateGet(req, res);
-// });
+//--------------------calender
+app.post("/users/:id/calender", (req, res) => {
+  console.log("calender");
+  routeHelperC.Calender(req, res);
+});
 
-// app.delete("/graduate/delete/:id", (req, res) => {
-//   routeHelper.graduateDelete(req, res);
-// });
-
-// app.post("/contactUs", (req, res) => {
-//   console.log('contactUs');
-//   routeHelper.contactUs( req, res);
-// });
-
-// app.get("/getContactsList", (req, res) => {
-//   console.log('getContactsList');
-//   routeHelper.getContactsList( req, res);
-// });
-
-
-
+app.post("/api/purpose", (req, res) => {
+  console.log("Purpose");
+  routeHelperC.Purpose(req, res);
+});
 
 
 
@@ -190,3 +117,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
 });
+
+

@@ -1,120 +1,62 @@
-import React from "react";
-import  {dateFns} from "date-fns";
 
-class Calendar extends React.Component {
-  state = {
-    currentMonth: new Date(),
-    selectedDate: new Date()
-  };
+// import React, {Component} from 'react';
+import 'whatwg-fetch';
+import React from 'react';
+import Scheduler from 'scheduler';
 
-  renderHeader() {
-    const dateFormat = "MMMM YYYY";
+import customStore from 'devextreme/data/custom_store';
 
-    return (
-      <div className="header row flex-middle">
-        <div className="col col-start">
-          <div className="icon" onClick={this.prevMonth}>
-            chevron_left
-          </div>
-        </div>
-        <div className="col col-center">
-          <span>{dateFns.format(this.state.currentMonth, dateFormat)}</span>
-        </div>
-        <div className="col col-end" onClick={this.nextMonth}>
-          <div className="icon">chevron_right</div>
-        </div>
-      </div>
-    );
-  }
+function getData(_, requestOptions) {
+  const PUBLIC_KEY = 'AIzaSyBnNAISIUKe6xdhq1_rjor2rxoI3UlMY7k',
+    CALENDAR_ID = 'f7jnetm22dsjc3npc2lu3buvu4@group.calendar.google.com';
+  const dataUrl = [ 'https://www.googleapis.com/calendar/v3/calendars/',
+    CALENDAR_ID, '/events?key=', PUBLIC_KEY].join('');
 
-  renderDays() {
-    const dateFormat = "dddd";
-    const days = [];
+  return fetch(dataUrl, requestOptions).then(
+    (response) => response.json()
+  ).then((data) => data.items);
+}
 
-    let startDate = dateFns.startOfWeek(this.state.currentMonth);
+const dataSource = new customStore({
+  load: (options) => getData(options, { showDeleted: false })
+});
 
-    for (let i = 0; i < 7; i++) {
-      days.push(
-        <div className="col col-center" key={i}>
-          {dateFns.format(dateFns.addDays(startDate, i), dateFormat)}
-        </div>
-      );
-    }
+const currentDate = new Date(2020, 4, 19);
+const views = ['day', 'workWeek', 'month'];
 
-    return <div className="days row">{days}</div>;
-  }
-
-  renderCells() {
-    const { currentMonth, selectedDate } = this.state;
-    const monthStart = dateFns.startOfMonth(currentMonth);
-    const monthEnd = dateFns.endOfMonth(monthStart);
-    const startDate = dateFns.startOfWeek(monthStart);
-    const endDate = dateFns.endOfWeek(monthEnd);
-
-    const dateFormat = "D";
-    const rows = [];
-
-    let days = [];
-    let day = startDate;
-    let formattedDate = "";
-
-    while (day <= endDate) {
-      for (let i = 0; i < 7; i++) {
-        formattedDate = dateFns.format(day, dateFormat);
-        const cloneDay = day;
-        days.push(
-          <div
-            className={`col cell ${
-              !dateFns.isSameMonth(day, monthStart)
-                ? "disabled"
-                : dateFns.isSameDay(day, selectedDate) ? "selected" : ""
-            }`}
-            key={day}
-            onClick={() => this.onDateClick(dateFns.parse(cloneDay))}
-          >
-            <span className="number">{formattedDate}</span>
-            <span className="bg">{formattedDate}</span>
-          </div>
-        );
-        day = dateFns.addDays(day, 1);
-      }
-      rows.push(
-        <div className="row" key={day}>
-          {days}
-        </div>
-      );
-      days = [];
-    }
-    return <div className="body">{rows}</div>;
-  }
-
-  onDateClick = day => {
-    this.setState({
-      selectedDate: day
-    });
-  };
-
-  nextMonth = () => {
-    this.setState({
-      currentMonth: dateFns.addMonths(this.state.currentMonth, 1)
-    });
-  };
-
-  prevMonth = () => {
-    this.setState({
-      currentMonth: dateFns.subMonths(this.state.currentMonth, 1)
-    });
-  };
-
+class CalendarsApp extends React.Component {
   render() {
+      
+const dataSource = new customStore({
+    load: (options) => getData(options, { showDeleted: false })
+  });
+  
+  const currentDate = new Date(2020, 4, 19);
+  const views = ['day', 'workWeek', 'month'];
     return (
-      <div className="calendar">
-        {this.renderHeader()}
-        {this.renderDays()}
-        {this.renderCells()}
-      </div>
+      <React.Fragment>
+        <div className="long-title">
+          <h3>Tasks for Employees (USA Office)</h3>
+        </div>
+        <Scheduler
+          dataSource={dataSource}
+          views={views}
+          defaultCurrentView="workWeek"
+          defaultCurrentDate={currentDate}
+          height={500}
+          startDayHour={7}
+          editing={false}
+          showAllDayPanel={false}
+          startDateExpr="start.dateTime"
+          endDateExpr="end.dateTime"
+          textExpr="summary"
+          timeZone="America/Los_Angeles" />
+      </React.Fragment>
+
     );
   }
 }
 
-export default Calendar;
+export default CalendarsApp;
+
+

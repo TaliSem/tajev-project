@@ -10,7 +10,6 @@ import Button from 'react-bootstrap/Button';
 
 
 
-
 export class Practice extends Component {
     render() {
         return (
