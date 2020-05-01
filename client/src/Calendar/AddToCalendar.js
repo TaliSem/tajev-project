@@ -18,7 +18,7 @@ import TravelTime from '../Images/TravelTime.png';
 import { Icon, InlineIcon } from '@iconify/react';
 import calendarPlusO from '@iconify/icons-fa/calendar-plus-o';
 import ReactAddToCalendar from './ReactAddToCalendar';
-
+import Form from 'react-bootstrap/Form';
 
 
 
@@ -114,6 +114,14 @@ loadToServer = e =>{
       // : 
 
       <div>
+
+<div className="title">
+                <img  className="profilePicture" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973461_960_720.png" alt="profilePicture"/>
+                    <span >הפעילות היומית</span>
+                {/* <h2 >הפעילות היומית</h2> */}
+               
+                </div>
+                <p className="subtitle">?מתי תרצו לבצע את התרגול הבא</p>
            <div className="week">
                   <Button
                    variant="outline-success" value={7} disabled={isValRange} onClick={isValRange ? this.handleClick : null} style={{backgroundColor:"whit", boxShadow: "1px 1px #888888 ",fontWeight: "bold" ,marginLeft:"5px"}}>ש</Button>
@@ -132,11 +140,11 @@ loadToServer = e =>{
                  { showMassge ? 
                  <Modal.Dialog>
                  <Modal.Header closeButton>
-                   <Modal.Title> יש לבחור יום תקין</Modal.Title>
+                   <Modal.Title>                     יש לבחור יום תקין</Modal.Title>
                  </Modal.Header>
                
                  <Modal.Body>
-                   <p>יש לבחור  היום או  עד עוד יומיים</p>
+                   <p>יש לבחור, היום או  עד עוד יומיים</p>
                  </Modal.Body>
                
                  <Modal.Footer>
@@ -145,7 +153,28 @@ loadToServer = e =>{
                </Modal.Dialog>
                 :  null  }
            </div>
-           <p className="text">:פעילות מועודפת להיום</p>
+           <Form>  
+  <Form.Group className="FormMeeting" controlId="Form.meeting">
+    <Form.Control as="select" size="sm"  >
+      <option>08:00</option>
+      <option>09:00</option>
+      <option>10:00</option>
+      <option>11:00</option>
+      <option>12:00</option>
+      <option>13:00</option>
+      <option>14:00</option>
+      <option>15:00</option>
+      <option>16:00</option>
+      <option>17:00</option>
+      <option>18:00</option>
+      <option>19:00</option>
+      <option>20:00</option>
+      <option>21:00</option>
+      <option>22:00</option>
+    </Form.Control>
+  </Form.Group>
+  </Form>
+           <p className="text">:פעילות מועדפת להיום</p>
 
     <div className="col-md-4" >
       <img src={ShowerActivity} alt="ShowerActivity" className="icon"
@@ -160,7 +189,7 @@ loadToServer = e =>{
         this.setState({description:"פעילות במטבח"})
         }}/>
 
-      <img src={Playground} alt="Playground" className="icon"
+      <img title="פעילות בגן שעשועים" src={Playground} alt="Playground" className="icon"  
        onClick={()=>{
         this.setState({title:"TalkOn - פעילות בגן שעשועים"})
         this.setState({description:"פעילות בגן שעשועים"})
@@ -209,7 +238,10 @@ displayItemIcons={false}
 {/* <MakeUrls/> */}
 
 
-
+<p>
+  ____________________________
+</p>
+<p>...איזה כיף נפגש בקרוב</p>
       </div>
     )
   };

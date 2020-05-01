@@ -76,6 +76,7 @@
     "react-datetime": "^2.16.3",
     "react-google-calendar-api": "^1.0.11",
     "react-icons": "^3.10.0",
+    "react-image-tooltip": "^4.0.2",
     "react-weekday-picker": "^1.0.8",
     "react-widgets-moment-localizer": "^1.0.2",
     "react_google_calendar": "^2.2.4444",
