@@ -37,11 +37,6 @@ if (process.env.NODE_ENV === "test") {
 
 
 
-
-
-
-
-
 //------------------google api
 
 
@@ -105,7 +100,7 @@ app.post("/users/:id/calender", (req, res) => {
   routeHelperC.Calender(req, res);
 });
 
-app.post("/api/purpose", (req, res) => {
+app.get("/api/purpose", (req, res) => {
   console.log("Purpose");
   routeHelperC.Purpose(req, res);
 });

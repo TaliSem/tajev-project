@@ -39,28 +39,31 @@ function Purpose(req,res){
     console.log("Purpose is accessed");
 
     MongoClient.connect(url, function(err, db) {
-      if (err) {
-    console.log(err);
-    return res.sendStatus(500);
-    
-      }
-      const dbo = db.db(myDb);
-      const queryPurpose = req.body
 
-    dbo.collection(PurposeColl).insertOne(queryPurpose, function(err, result) {
-            if (err){
-              console.log(err);
-              return res.sendStatus(500);
-              
-                }
-                else{
-                  res.status(201).send(queryPurpose);
-                  console.log(queryPurpose);
-                }
-          
-        });
-    });
-};
+      if (err) throw err;
+  var dbo = db.db(myDb);
+  dbo.collection('users').aggregate([
+    { $lookup:
+       {
+         from: PurposeColl,
+         localField: 'email',
+         foreignField: 'email',
+         as: 'PurposeList'
+       }
+     }
+    ]).toArray(function(err, PurposeColl) {
+
+      if (err) {
+        res.sendStatus(500);
+        return;
+      }
+      res.send(PurposeColl);
+    console.log(PurposeColl);
+    db.close();
+    
+  });
+                });
+              };
 
 
 

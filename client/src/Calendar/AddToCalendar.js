@@ -6,7 +6,8 @@ import Modal from 'react-bootstrap/Modal' ;
 import { GiPuzzle,GiChefToque,GiBabyfootPlayers } from "react-icons/gi";
 import { FaCar,FaShower } from "react-icons/fa";
 import { AiOutlineRead } from "react-icons/ai";
-import '../Pages/Practice.css';
+// import '../Pages/Practice.css';
+import "./styles/react-add-to-calendar.css";
 import axios from 'axios';
 import MakeUrls from './makeUrls';
 import ShowerActivity from '../Images/ShowerActivity.png';
@@ -31,6 +32,7 @@ class AddEventCalendar extends React.Component {
     startTime: "",
     title: '',      
     description: '',
+    time: '',
      showMassge: false ,
      isError: false,
      Succeeded: false, 
@@ -68,8 +70,11 @@ loadToServer = e =>{
       startTime: this.state.startTime,
       endTime: '2016-09-16T21:45:00-04:00' ,})
     .then(res => {
-      if (res.status === 200) {
+      console.log(res.status);
+      if (res.status === 201) {
+        console.log('Succeeded' + this.state.Succeeded);
         this.setState({ Succeeded: true });
+        
       } else {
         this.setState({ isError: true });
       }
@@ -77,7 +82,22 @@ loadToServer = e =>{
     .catch(err => {
       this.setState({ isError: true });
     });
+    console.log('Succeeded' + this.state.Succeeded);
 };
+
+
+
+handleClickTime= (e) => {
+  const {value} = e.target;
+ 
+this.setState({
+  time: value ,
+});
+console.log(this.state.time);
+
+  }
+
+
   render()
    {
   const isValRange = true ;
@@ -85,25 +105,37 @@ loadToServer = e =>{
   console.log(`AddEventCalendar : ${this.state.startTime}`);
   console.log(`titel : ${this.state.title}`);
   console.log(`description : ${this.state.description}`);
+  console.log(`time : ${this.state.time}`);
+
+//   const d = this.state.time;
+//   d.setMinutes(d.getMinutes() + 45);
+
+//   const eventEndTime = new Date()
+// eventEndTime.setMinutes(45);
+// console.log(eventEndTime +'j'+d )
+
 
    let eventCalendar= {
     title: this.state.title,    
     description: this.state.description,
     location: 'Home',
+    // startTime: '2016-09-16T20:15:00-04:00',
+    // endTime: '2016-09-16T21:45:00-04:00'
     startTime: this.state.startTime,
-    endTime: '2020-04-30' 
+     endTime: this.state.startTime,
   }
   
   let icon = { 'calendarPlusO': 'left' };
-
+  
   let items = [
     { google: 'Google' },
     { outlook: 'Outlook' },
-    { outlookcom: 'Outlook.com' },
-    { apple: 'iCal' },
+    // { outlookcom: 'Outlook.com' },
+    { apple: 'Apple' },
     { yahoo: 'Yahoo!' },
  ];
  
+ const disabled = !this.state.startTime ||  !this.state.description
 
     return(
       // this.state.Succeeded
@@ -123,24 +155,19 @@ loadToServer = e =>{
                 </div>
                 <p className="subtitle">?מתי תרצו לבצע את התרגול הבא</p>
            <div className="week">
-                  <Button
-                   variant="outline-success" value={7} disabled={isValRange} onClick={isValRange ? this.handleClick : null} style={{backgroundColor:"whit", boxShadow: "1px 1px #888888 ",fontWeight: "bold" ,marginLeft:"5px"}}>ש</Button>
-                  <Button 
-                  
-                  onClick={this.handleChangeDate} 
-                  variant="outline-success" value={6} disabled={!isValRange} onClick={isValRange ? this.handleClick : null} style={{backgroundColor:"whit", boxShadow: "1px 1px #888888 ",fontWeight: "bold", marginLeft:"5px" }}>ו</Button>
-                  <Button
-                   variant="outline-success" value={5} disabled={!isValRange} onClick={isValRange ? this.handleClick : null}  style={{backgroundColor:"whit", boxShadow: "1px 1px #888888 ",fontWeight: "bold", marginLeft:"5px" }}>ה</Button>
+                  <Button variant="outline-success" value={7} disabled={!isValRange} onClick={isValRange ? this.handleClick : null} style={{backgroundColor:"whit", boxShadow: "1px 1px #888888 ",fontWeight: "bold" ,marginLeft:"5px"}}>ש</Button>
+                  {/* <Button onClick={this.handleChangeDate} variant="outline-success" value={6} disabled={!isValRange} onClick={isValRange ? this.handleClick : null} style={{backgroundColor:"whit", boxShadow: "1px 1px #888888 ",fontWeight: "bold", marginLeft:"5px" }}>ו</Button> */}
+                  <Button variant="outline-success" value={6} disabled={!isValRange} onClick={isValRange ? this.handleClick : null} style={{backgroundColor:"whit", boxShadow: "1px 1px #888888 ",fontWeight: "bold", marginLeft:"5px" }}>ו</Button>
+                  <Button variant="outline-success" value={5} disabled={!isValRange} onClick={isValRange ? this.handleClick : null}  style={{backgroundColor:"whit", boxShadow: "1px 1px #888888 ",fontWeight: "bold", marginLeft:"5px" }}>ה</Button>
                   <Button variant="outline-success" value={4} disabled={!isValRange} onClick={isValRange ? this.handleClick : null}  style={{backgroundColor:"whit", boxShadow: "1px 1px #888888 ",fontWeight: "bold" ,marginLeft:"5px"}}>ד</Button>
                   <Button variant="outline-success" value={3} disabled={!isValRange} onClick={isValRange ? this.handleClick : null} style={{backgroundColor:"whit", boxShadow: "1px 1px #888888 ",fontWeight: "bold", marginLeft:"5px" }}>ג</Button>
-                  <Button
-                   onChange={ this.handleChange('startTime')} 
-                    variant="outline-success" value={2} disabled={!isValRange} onClick={isValRange ? this.handleClick : null} style={{backgroundColor:"whit", boxShadow: "1px 1px #888888 ",fontWeight: "bold",marginLeft:"5px" }}>ב</Button>
+                  <Button variant="outline-success" value={2} disabled={!isValRange} onClick={isValRange ? this.handleClick : null} style={{backgroundColor:"whit", boxShadow: "1px 1px #888888 ",fontWeight: "bold",marginLeft:"5px" }}>ב</Button>
+                  {/* <Button onChange={ this.handleChange('startTime')} variant="outline-success" value={2} disabled={!isValRange} onClick={isValRange ? this.handleClick : null} style={{backgroundColor:"whit", boxShadow: "1px 1px #888888 ",fontWeight: "bold",marginLeft:"5px" }}>ב</Button> */}
                   <Button variant="outline-success" value={1} disabled={!isValRange} onClick={isValRange ? this.handleClick : null} style={{backgroundColor:"whit", boxShadow: "1px 1px #888888 ",fontWeight: "bold", marginLeft:"5px" }}>א</Button>
                  { showMassge ? 
                  <Modal.Dialog>
                  <Modal.Header closeButton>
-                   <Modal.Title>                     יש לבחור יום תקין</Modal.Title>
+                   <Modal.Title>  יש לבחור יום תקין</Modal.Title>
                  </Modal.Header>
                
                  <Modal.Body>
@@ -153,9 +180,15 @@ loadToServer = e =>{
                </Modal.Dialog>
                 :  null  }
            </div>
-           <Form>  
+
+
+
+        <div>
+          <input type="time" max="09:00" min="06:00" step="900"/>
+        </div>
+           {/* <Form>  
   <Form.Group className="FormMeeting" controlId="Form.meeting">
-    <Form.Control as="select" size="sm"  >
+    <Form.Control as="select" size="sm"  onClick={this.handleClickTime}  >
       <option>08:00</option>
       <option>09:00</option>
       <option>10:00</option>
@@ -173,23 +206,24 @@ loadToServer = e =>{
       <option>22:00</option>
     </Form.Control>
   </Form.Group>
-  </Form>
+  </Form> */}
            <p className="text">:פעילות מועדפת להיום</p>
 
-    <div className="col-md-4" >
-      <img src={ShowerActivity} alt="ShowerActivity" className="icon"
+    <div className="col-md-4 col-lg-12" >
+      <img src={ShowerActivity} alt="ShowerActivity" className="icon"  
+      data-toggle="tooltip" title ="פעילות במקלחת"
        onClick={()=>{
         this.setState({title:"TalkOn - פעילות במקלחת"})
         this.setState({description:"פעילות במקלחת"})
         }}/>
 
-      <img src={KitchenActivity} alt="KitchenActivity" className="icon"
+      <img src={KitchenActivity} alt="KitchenActivity" className="icon"  data-toggle="tooltip" title ="פעילות במטבח"
        onClick={()=>{
         this.setState({title:"TalkOn - פעילות במטבח"})
         this.setState({description:"פעילות במטבח"})
         }}/>
 
-      <img title="פעילות בגן שעשועים" src={Playground} alt="Playground" className="icon"  
+      <img title="פעילות בגן שעשועים" src={Playground} alt="Playground" className="icon"  data-toggle="tooltip" title ="פעילות בגן שעשועים" 
        onClick={()=>{
         this.setState({title:"TalkOn - פעילות בגן שעשועים"})
         this.setState({description:"פעילות בגן שעשועים"})
@@ -197,40 +231,40 @@ loadToServer = e =>{
 
     </div>
 
-    <div className="col-md-4" >
-      <img src={PlayingTime} alt="PlayingTime" className="icon"
+    {/* <div className="col-md-4 col-lg-6" > */}
+    <div className="col-md-4 col-lg-12" >
+      <img src={PlayingTime} alt="PlayingTime" className="icon" data-toggle="toltip" title ="זמן משחק"
        onClick={()=>{
         this.setState({title:"TalkOn - זמן משחק"})
         this.setState({description:"זמן משחק"})
         }}/>
 
-      <img src={StoryTime} alt="StoryTime" className="icon"
+      <img src={StoryTime} alt="StoryTime" className="icon" data-toggle="toltip" title ="זמן סיפור"
        onClick={()=>{
         this.setState({title:"TalkOn - זמן סיפור"})
         this.setState({description:"זמן סיפור"})
         }}/>
 
-      <img src={TravelTime} alt="TravelTime" className="icon"
+      <img src={TravelTime} alt="TravelTime" className="icon" data-toggle="toltip" title ="פעילות בנסיעה"
        onClick={()=>{
-        this.setState({title:"TalkOn - פעילות בגן שעשועים"})
-        this.setState({description:"פעילות בגן שעשועים"})
+        this.setState({title:"TalkOn - פעילות בנסיעה"})
+        this.setState({description:"פעילות בנסיעה"})
         }}/>
 
     </div>
-
-
-
+    <button className="btn btn-outline-primary" style={{marginTop:"15px"}} disabled={disabled} onClick={this.loadToServer}>
+    <Icon icon={calendarPlusO}  style={{color:"blue",margin:"5px"}}/>       
 <AddToCalendar event={eventCalendar}
  buttonLabel="קבע פעילות ביומן" 
  buttonTemplate={icon}
  listItems={items} 
 displayItemIcons={false}
- onClick={this.loadToServer}
- 
-/>
-<ReactAddToCalendar
 
+ icon={calendarPlusO}
+ disabled={disabled}
 />
+</button>
+
 
         {/* <AddToCalendar event={this.state.event}
         onClick={this.loadToServer}/> */}
@@ -239,9 +273,11 @@ displayItemIcons={false}
 
 
 <p>
-  ____________________________
+  _____________________________________________________
 </p>
-<p>...איזה כיף נפגש בקרוב</p>
+
+{!this.state.Succeeded ? <span>אנא קבעו תרגול</span> : <span>...איזה כיף נפגש בקרוב</span>}
+
       </div>
     )
   };
@@ -249,7 +285,19 @@ displayItemIcons={false}
     const {value} = e.target;
     const {showMassge,startTime} = this.state;
     const today = new Date();
-    const day = today.getDay(); 
+    let day = today.getDay(); 
+    let dd = Number(day) + Number(value) + 1;
+    today.setSeconds(35);
+    let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+dd;
+    // console.log(today)
+   console.log(day)
+   console.log(value)
+   console.log(dd)
+console.log(date)
+// today.setHours(15, 35, 1);
+    
+console.log(today)
+
 
     const weekday = new Array(7);
 weekday[0] = "ראשון";
@@ -261,29 +309,35 @@ weekday[5] = "שישי";
 weekday[6] = "שבת";
 
 const dayWeek= weekday[value-1];
-console.log(dayWeek);
 
-    if ((value >= day+1) && (value < day+4) )  {
+console.log(dayWeek);
+console.log(value);
+console.log(day);
+console.log(dd);
+ 
+
+    if ((value >= day+1) && (value < day+4))  {
             this.isValRange=  true  ;
 
             // console.log(this.isValRange );
             console.log(today);
             console.log(value);
             console.log(day);
+            console.log(today+value);
+
             //console.log(maxday);
             this.setState({
               showMassge: false ,
-              
             });
             this.setState({ 
-              // startTime : e.target.value
-              // startTime : e.target.value
-              startTime : dayWeek
+              startTime : date
             });
             this.setState({
               massage: `היום שנבחר הוא ${dayWeek}`
             });
     }  else { this.isValRange = false ;
+      console.log(dd);
+      console.log(Number(today.getDate()) + Number(value))
 
             console.log(this.isValRange );
             console.log(value);
@@ -291,6 +345,9 @@ console.log(dayWeek);
             this.setState({
               showMassge: true
             });
+            // this.setState({ 
+            //   startTime : date
+            // });
 
     }
     console.log(startTime)
