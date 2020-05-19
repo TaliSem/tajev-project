@@ -42,10 +42,10 @@ function Purpose(req,res){
 
       if (err) throw err;
   var dbo = db.db(myDb);
-  dbo.collection('users').aggregate([
+  dbo.collection(calenderColl).aggregate([
     { $lookup:
        {
-         from: PurposeColl,
+         from: 'users',
          localField: 'email',
          foreignField: 'email',
          as: 'PurposeList'

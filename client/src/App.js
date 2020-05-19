@@ -13,7 +13,9 @@ import NewUser from "./user/NewUser";
 import Terms from "./user/Terms";
 import HomeRedirect from './Pages/HomeRedirect';
 import Practice from './Pages/Practice';
+
 import CalendarApp from './Pages/Calendar';
+import Purpose from './Pages/Purpose';
 import "bootstrap/dist/css/bootstrap.min.css";
 import ReactAddToCalendar from './Calendar/ReactAddToCalendar';
 import AddEventCalendar from './Calendar/AddToCalendar';
@@ -35,10 +37,20 @@ class App extends Component {
 
   state = {
     
-    user: "" };
+    user: "" ,
+    trip : [
+      { name: "Avi", age: 12 },
+      { name: "Moshe", age: 24 }
+    ],
+    trip_categories:[],
+  };
 
   setUser = user => {
     this.setState({user:user})
+  }
+
+  setTrip= trip =>{
+    this.setState({trip : trip})
   }
 
   // clickHandler = () => {
@@ -71,20 +83,18 @@ class App extends Component {
       {this.state.user ?<Link to='/Page' >Photo App</Link> : ''} */}
        {!this.state.user ? <Link to='/newUser'>NewUser</Link> : ""}
        {!this.state.user ? <Link to='/Terms'>Terms</Link> : ""}
-       {!this.state.user ? <Link to='/Practice'>Practice</Link> : ""}
+       {!this.state.user ? <Link to='/Prctice'>Practice</Link> : ""}
+       {!this.state.user ? <Link to='/Purpose'>Purpose</Link> : ""}
+       
       
       
       <Switch>
-        <Route exact path='/' component={Home}/>
+        <Route exact path='/' render ={()=> <Home  trip_categories={this.state.trip_categories} />}/>
          <Route exact path='/Login'   render={()=> <Login setUser={this.setUser}/>} />
-        {/* <Route exact path='/Register' render={()=> <Register setUser={this.setUser}/>}/> */}
         <Route exact path='/Test' render={()=> <Test setUser={this.setUser}/>}/>
-        {/* <Route exact path='/ResetPassword' render={()=> <ResetPassword setUser={this.setUser}/>}/> */} */}
-        {/* <Route exact path='/1' component={A}/>
-        <Route exact path='/logout'   render={()=> <Logout setUser={this.setUser}/>}/>
-        <Route exact path='/Page'   render={()=> <TopBar setUser={this.setUser}/>}/> */}
+       
 
-<Route exact path="/login" render={()=><Login email={this.state.email} setEmail={this.setEmail} setToken={this.setToken} setManager={this.props.setManager} resetPsdSuccessed={this.state.resetPsdSuccessed} />} />
+<Route exact path="/login" render={()=><Login email={this.state.email} setEmail={this.setEmail}  setManager={this.props.setManager} resetPsdSuccessed={this.state.resetPsdSuccessed} />} />
           <Route exact path="/logout" render={()=><Logout setEmail={this.setEmail} setToken={this.setToken}/>} />
           <Route exact path="/register" render={()=><Register setEmail={this.setEmail}/>} />
           <Route exact path="/forgotPassword" component={ForgotPassword} />
@@ -96,6 +106,8 @@ class App extends Component {
        <Route exact path="/Calendar" component={CalendarApp} /> 
        <Route exact path="/CalendarT" component={ReactAddToCalendar} /> 
        <Route exact path="/AddToCalendar" component={AddEventCalendar} /> 
+       <Route exact path="/Purpose" component={Purpose} /> 
+       
    
 
       </Switch>

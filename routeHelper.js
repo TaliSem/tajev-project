@@ -168,7 +168,7 @@ function forgotPassword(req, res) {
     const dbo = db.db(myDb);
     const data = req.body;
     
-    console.log(data.email);
+    console.log(data);
     dbo
     .collection(usersColl)
     .findOne({ email: data.email }, function(err, result) {

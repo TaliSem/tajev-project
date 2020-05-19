@@ -3,3 +3,30 @@
     height: 600px;
     width: 1300px; 
 }
+
+.titel{
+    text-align: center;
+    border: 1px solid black;
+    width: 45%;
+    margin-left: 29%;
+}
+
+.Parctice{
+    width: 55%;
+    margin-left: 24%;
+
+}
+
+.buttonP{
+    border: 1px solid black;
+    margin-left: 80%;
+    width: 10%;
+    height: 50px;
+    text-align: center;
+   
+}
+.amountPrac{
+    height: 50px;
+    text-align: left;
+   
+}
